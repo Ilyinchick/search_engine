@@ -1,0 +1,4 @@
+C++ was designed with an
+orientation toward systems programming
+and embedded.
+test1
