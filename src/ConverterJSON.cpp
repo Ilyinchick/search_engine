@@ -101,7 +101,6 @@ void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>> &answers)
             doc.find("answers").value().find(request).value()["relevance"];
             for (auto data: relevanceVector) {
                 limit++;
-                if (limit > GetResponsesLimit()) break;
                 doc.find("answers").value().find(request).value().find("relevance").value()["docid: "
                                                                                             + std::to_string(
                         data.doc_id)] = "rank: " + std::to_string(data.rank);

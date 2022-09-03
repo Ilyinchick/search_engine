@@ -2,7 +2,7 @@
   "answers": {
     "request0": {
       "relevance": {
-        "docid: 0": "rank: 2.000000",
+        "docid: 0": "rank: 1.000000",
         "docid: 1": "rank: 0.500000"
       },
       "result": "true"
@@ -13,8 +13,8 @@
     },
     "request2": {
       "relevance": {
-        "docid: 0": "rank: 0.333333",
-        "docid: 1": "rank: 0.333333"
+        "docid: 0": "rank: 1.000000",
+        "docid: 1": "rank: 1.000000"
       },
       "result": "true"
     },
