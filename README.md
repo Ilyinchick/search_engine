@@ -23,12 +23,6 @@ I used nlohmann::json library</li>
 <dd>
 <ul>
 <li>Download and extract this project. </li>
-<li>Download and extract <a href="https://github.com/nlohmann/json"> <b>JSON for modern C++</b> </a>
-into root folder of project. Make sure that references in CMakeList.txt are valid for 
-your paths. <br></li>
-<li>To run test you also need to download and extract <a href="https://github.com/google/googletest"> 
-<b>Google Test Framework for C++</b></a> in root folder. 
-In that case also check references in CMakeList.txt <br></li>
 <li>I used absolute paths in this project, so to run project correctly you need to make sure 
 that all global paths in project are correct.
 <br> Files to check: 
