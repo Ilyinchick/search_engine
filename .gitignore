@@ -1,5 +1,3 @@
 .idea/
 .git/
 cmake*/
-googleTest/
-json-develop/
