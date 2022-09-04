@@ -21,12 +21,19 @@ I used nlohmann::json library</li>
 </dd>
 <dt>Instructions to run the project</dt>
 <dd>
-Download and extract this project. <br>
-Download and extract <a href="https://github.com/nlohmann/json"> <b>JSON for modern C++</b> </a>
-into root folder of project. Make sure that references in CMakeList.txt are valid for your paths. <br>
-To run test you also need to download and extract <a href="https://github.com/google/googletest"> 
-<b>Google Test Framework for C++</b></a> in root folder. 
-In that case also check references in CMakeList.txt <br>
+<ul>
+<li>Download and extract this project. </li>
+<li>I used absolute paths in this project, so to run project correctly you need to make sure 
+that all global paths in project are correct.
+<br> Files to check: 
+<ul>
+<li><a href="manage/config.json">Config.json</a> file in "manage" folder.</li>
+<li>Global std::string in <a href="include/ConverterJSON.h">ConverterJSON.h</a> - 
+CONFIG_PATH, REQUESTS_PATH, ANSWERS_PATH ("include" folder).</li>
+</ul>
+</li>
+</ul>
+
 If all is correct, you can run project in your IDE. <br>
 In this project I used MinGW compiler.
 </dd>

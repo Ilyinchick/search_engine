@@ -29,44 +29,27 @@ std::vector<std::string> SearchServer::getWordsFromString(const std::string &str
 
 std::vector<RelativeIndex> SearchServer::getRelativeVectorForQuery(const std::string &query) {
     std::vector<RelativeIndex> indexes;
+    int absoluteRelevance[_index.getDocs().size()];
+    float relevance[_index.getDocs().size()];
+    for (auto& f: relevance) f = 0.0;
+    for (auto& i: absoluteRelevance) i = 0;
+
     for (int i = 0; i < _index.getDocs().size(); i++) {
-        RelativeIndex idx = getIndexForQueryForDoc(query, i);
-        // if rank is not null for this doc
-        if (idx.rank > 0) indexes.push_back(idx);
-    }
-    return indexes;
-}
-
-
-RelativeIndex SearchServer::getIndexForQueryForDoc(const std::string &query, const int &doc_id) {
-    std::vector<std::string> words = getWordsFromString(query);
-    auto dictionary = _index.getDictionary();
-
-    // init array with zeros
-    float rank[words.size()];
-    for (auto &f: rank) f = 0.0;
-
-    for (int i = 0; i < words.size(); i++) {
-        if (dictionary.count(words[i]) < 1) continue;
-
-        for (const auto &pair: dictionary) {
-            if (pair.first == words[i]) {
-                int totalCount = 0;
-
-                for (auto data: pair.second) {
-                    totalCount += data.count;
-                    if (data.doc_id == doc_id) rank[i] = data.count;
-                }
-                assert(totalCount >= rank[i]);
-                totalCount == 0 ? rank[i] = 0 : rank[i] /= totalCount;
-            }
+        for (const auto& word : getWordsFromString(query)) {
+            absoluteRelevance[i] += countWordsInDoc(word, i);
         }
     }
+    // find max relevance for this query
+    int maxRelevance = absoluteRelevance[0];
+    for (const auto& i: absoluteRelevance) if (i >= maxRelevance) maxRelevance = i;
+    if (maxRelevance == 0) return indexes;
 
-    float queryRank = 0.0;
-    for (auto i: rank) queryRank += i;
+    for (int i = 0; i < _index.getDocs().size(); i++) {
+        relevance[i] = (float)absoluteRelevance[i] / (float)maxRelevance;
+        if (relevance[i] > 0) indexes.push_back(RelativeIndex{i, relevance[i]});
+    }
 
-    return RelativeIndex{doc_id, queryRank};
+    return indexes;
 }
 
 void SearchServer::bubbleSortByRelevance(std::vector<RelativeIndex> &vector) {
@@ -75,9 +58,34 @@ void SearchServer::bubbleSortByRelevance(std::vector<RelativeIndex> &vector) {
         for (int j = 0; j < vector.size() - 1; j++) {
             if (vector[j].rank < vector[j + 1].rank) {
                 std::swap(vector[j], vector[j + 1]);
+            } else if (vector[j].rank == vector[j + 1].rank) {
+                if (vector[j].doc_id > vector[j + 1].doc_id) {
+                    std::swap(vector[j], vector[j + 1]);
+                }
             }
         }
     }
+    while (vector.size() > responseLimit) {
+        vector.pop_back();
+    }
+}
+
+int SearchServer::countWordsInDoc(const std::string& word, const int &doc_id) {
+    int count = 0;
+
+    for (auto pair: _index.getDictionary()) {
+        if (pair.first == word) {
+            for (auto data: pair.second) {
+                if (data.doc_id == doc_id) count = data.count;
+            }
+        }
+    }
+
+    return count;
+}
+
+void SearchServer::setResponseLimit(const int &limit) {
+    responseLimit = limit;
 }
 
 
