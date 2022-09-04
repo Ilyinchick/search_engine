@@ -87,5 +87,3 @@ int SearchServer::countWordsInDoc(const std::string& word, const int &doc_id) {
 void SearchServer::setResponseLimit(const int &limit) {
     responseLimit = limit;
 }
-
-

@@ -7,7 +7,7 @@ struct RelativeIndex {
     float rank;
 
     bool operator==(const RelativeIndex &other) const {
-        return (doc_id == other.doc_id && (rank == other.rank));
+        return (doc_id == other.doc_id && (other.rank == rank));
     }
 
 };
@@ -32,6 +32,7 @@ requests.json
     std::vector<std::vector<RelativeIndex>> search(const
                                                    std::vector<std::string> &queries_input);
 
+
     void setResponseLimit(const int& limit);
 
 private:
@@ -41,9 +42,9 @@ private:
     // sorting
     void bubbleSortByRelevance(std::vector<RelativeIndex> &vector);
 
-    int countWordsInDoc(const std::string& word, const int& doc_id);
-
     std::vector<std::string> getWordsFromString(const std::string &str);
+
+    int countWordsInDoc(const std::string& word, const int &doc_id);
 
     std::vector<RelativeIndex> getRelativeVectorForQuery(const std::string &query);
 };

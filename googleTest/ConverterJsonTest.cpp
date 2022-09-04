@@ -22,7 +22,7 @@ TEST(converterJSON, GetTextDocuments) {
 
 TEST(converterJSON, GetResponsesLimit) {
     auto converter = new ConverterJSON();
-    EXPECT_EQ(converter->GetResponsesLimit(), 5);
+    EXPECT_EQ(converter->GetResponsesLimit(), 2);
 }
 
 TEST(converterJSON, GetRequests) {

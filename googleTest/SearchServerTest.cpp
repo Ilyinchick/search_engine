@@ -59,14 +59,16 @@ TEST(TestCaseSearchServer, TestTop5) {
                     {7, 1},
                     {14, 1},
                     {0, 0.666666687},
-                    {1, 0.666666687},
-                    {2, 0.666666687}
+                    {2, 0.666666687},
+                    {3, 0.666666687}
             }
     };
     InvertedIndex idx;
     idx.UpdateDocumentBase(docs);
     SearchServer srv(idx);
+    srv.setResponseLimit(5);
     std::vector<vector<RelativeIndex>> result = srv.search(request);
+
 
 //    std::cout << "Result :" << std::endl;
 //    for (int i = 0; i < result.size(); i++) {
