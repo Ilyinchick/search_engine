@@ -23,15 +23,10 @@ I used nlohmann::json library</li>
 <dd>
 <ul>
 <li>Download and extract this project. </li>
-<li>I used absolute paths in this project, so to run project correctly you need to make sure 
-that all global paths in project are correct.
-<br> Files to check: 
-<ul>
-<li><a href="manage/config.json">Config.json</a> file in "manage" folder.</li>
-<li>Global std::string in <a href="include/ConverterJSON.h">ConverterJSON.h</a> - 
-CONFIG_PATH, REQUESTS_PATH, ANSWERS_PATH ("include" folder).</li>
-</ul>
-</li>
+<li>If you want to add some txt files to search, you need to write paths to those files in file 
+<a href="manage/config.json">config.json</a> ("manage" folder) </li>
+<li>In file <a href="manage/requests.json">requests.json</a> ("manage" folder) you can add more requests
+to search and adjust they to your needs. </li>
 </ul>
 
 If all is correct, you can run project in your IDE. <br>

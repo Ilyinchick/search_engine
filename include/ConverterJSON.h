@@ -4,16 +4,14 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include "filesystem"
+#include <Windows.h>
 #include "nlohmann/json.hpp"
 #include "InvertredIndex.h"
 #include "SearchServer.h"
 
 
 const static std::string VERSION = "0.1";
-
-const static std::string CONFIG_PATH = R"(C:\Users\ailyi\OneDrive\Documents\GitHub\search_engine\manage\config.json)";
-const static std::string REQUESTS_PATH = R"(C:\Users\ailyi\OneDrive\Documents\GitHub\search_engine\manage\requests.json)";
-const static std::string ANSWERS_PATH = R"(C:\Users\ailyi\OneDrive\Documents\GitHub\search_engine\manage\answers.json)";
 
 class ConverterJSON {
 
@@ -69,4 +67,6 @@ private:
     nlohmann::json getConfigJson();
 
     nlohmann::json getRequestsJson();
+
+    std::string getCurrentDirectory();
 };

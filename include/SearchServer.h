@@ -47,4 +47,5 @@ private:
     int countWordsInDoc(const std::string& word, const int &doc_id);
 
     std::vector<RelativeIndex> getRelativeVectorForQuery(const std::string &query);
+
 };

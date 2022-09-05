@@ -87,8 +87,11 @@ std::vector<std::string> ConverterJSON::GetRequests() {
 }
 
 void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>> &answers) {
-    std::ofstream file(ANSWERS_PATH);
+    std::filesystem::path configPath = getCurrentDirectory();
+    std::ofstream file(configPath.parent_path().parent_path().string().append("\\manage\\answers.json"));
     nlohmann::json doc;
+
+    if (!file.is_open()) std::cout << "Not open!" << std::endl;
 
     doc["answers"];
     for (int i = 0; i < answers.size(); i++) {
@@ -108,7 +111,7 @@ void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>> &answers)
             doc.find("answers").value().find(request).value()["result"] = "true";
         } else if (relevanceVector.size() == 1) {
             doc.find("answers").value().find(request).value()["docid: "
-                                                                                        + std::to_string(
+                                                              + std::to_string(
                     relevanceVector.back().doc_id)] = "rank: " + std::to_string(relevanceVector.back().rank);
             doc.find("answers").value().find(request).value()["result"] = "true";
         } else {
@@ -134,9 +137,10 @@ nlohmann::json ConverterJSON::getJson(const std::string &path) {
 
 // basic checks. Returns json with data if file and path are valid, otherwise returns empty file
 nlohmann::json ConverterJSON::getConfigJson() {
+    std::filesystem::path configPath = getCurrentDirectory();
     nlohmann::json doc;
     try {
-        doc = getJson(CONFIG_PATH);
+        doc = getJson(configPath.parent_path().parent_path().string().append("\\manage\\config.json"));
         if (!doc.contains("config")) throw NoConfigFieldException();
         if (doc.find("config").value().empty()) throw ConfigFieldIsEmptyException();
         if (doc.find("config")->find("version").value() != VERSION) throw IncorrectVersionJsonException();
@@ -161,10 +165,11 @@ nlohmann::json ConverterJSON::getConfigJson() {
 
 //returns requests.json if its data is valid
 nlohmann::json ConverterJSON::getRequestsJson() {
+    std::filesystem::path configPath = getCurrentDirectory();
     nlohmann::json doc;
 
     try {
-        doc = getJson(REQUESTS_PATH);
+        doc = getJson(configPath.parent_path().parent_path().string().append("\\manage\\requests.json"));
     }
     catch (FileNotFoundException &ex) {
         std::cout << ex.what() << std::endl;
@@ -183,7 +188,16 @@ nlohmann::json ConverterJSON::getRequestsJson() {
 }
 
 void ConverterJSON::testFilesForValid() {
-    testRequestsJson(REQUESTS_PATH);
-    testConfigJson(CONFIG_PATH);
+    std::filesystem::path configPath = getCurrentDirectory();
+    testRequestsJson(configPath.parent_path().parent_path().string().append("\\manage\\requests.json"));
+    testConfigJson(configPath.parent_path().parent_path().string().append("\\manage\\config.json"));
+}
+
+std::string ConverterJSON::getCurrentDirectory() {
+    char buffer[MAX_PATH];
+    GetModuleFileNameA(NULL, buffer, MAX_PATH);
+    std::string::size_type pos = std::string(buffer).find_last_of("\\/");
+
+    return std::string(buffer).substr(0, pos);
 }
 

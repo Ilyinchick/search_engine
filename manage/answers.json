@@ -20,6 +20,13 @@
     },
     "request3": {
       "result": "false"
+    },
+    "request4": {
+      "relevance": {
+        "docid: 0": "rank: 1.000000",
+        "docid: 1": "rank: 0.250000"
+      },
+      "result": "true"
     }
   }
 }

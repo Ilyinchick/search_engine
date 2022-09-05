@@ -2,7 +2,9 @@
 
 
 
+
 int main() {
+
     ConverterJSON converter;
     InvertedIndex index;
 
