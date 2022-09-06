@@ -23,16 +23,26 @@ std::string ConverterJSON::getDoc(const std::string &path) {
 }
 
 void ConverterJSON::testConfigJson(const std::string &path) {
-    std::ifstream file(path);
-    if (!file.is_open()) throw FileNotFoundException();
-
     nlohmann::json dict;
-    file >> dict;
-    if (dict.empty()) throw EmptyFileException();
-    if (!dict.contains("config")) throw NoConfigFieldException();
-    if (dict.find("config").value().empty()) throw ConfigFieldIsEmptyException();
-    if (dict.find("config")->find("version").value() != VERSION) throw IncorrectVersionJsonException();
-
+    try {
+        dict = getJson(path);
+        if (dict.empty()) throw EmptyFileException();
+        if (!dict.contains("config")) throw NoConfigFieldException();
+        if (dict.find("config").value().empty()) throw ConfigFieldIsEmptyException();
+        if (dict.find("config")->find("version").value() != VERSION) throw IncorrectVersionJsonException();
+    }
+    catch (EmptyFileException &ex) {
+        std::cout << ex.what() << std::endl;
+    }
+    catch (NoConfigFieldException &ex) {
+        std::cout << ex.what() << std::endl;
+    }
+    catch (ConfigFieldIsEmptyException &ex) {
+        std::cout << ex.what() << std::endl;
+    }
+    catch (IncorrectVersionJsonException &ex) {
+        std::cout << ex.what() << std::endl;
+    }
 }
 
 void ConverterJSON::testRequestsJson(const std::string &path) {
@@ -87,11 +97,8 @@ std::vector<std::string> ConverterJSON::GetRequests() {
 }
 
 void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>> &answers) {
-    std::filesystem::path configPath = getCurrentDirectory();
-    std::ofstream file(configPath.parent_path().parent_path().string().append("\\manage\\answers.json"));
+    std::ofstream file("../../manage/answers.json", std::ios::out | std::ios::trunc);
     nlohmann::json doc;
-
-    if (!file.is_open()) std::cout << "Not open!" << std::endl;
 
     doc["answers"];
     for (int i = 0; i < answers.size(); i++) {
@@ -118,14 +125,13 @@ void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>> &answers)
             doc.find("answers").value().find(request).value()["result"] = "false";
         }
     }
-
     file << doc;
     file.close();
 }
 
 // throws FileNotFoundException and EmptyFileException if path or dile is invalid, otherwise return json
 nlohmann::json ConverterJSON::getJson(const std::string &path) {
-    std::ifstream file(path);
+    std::ifstream file(path, std::ios::in);
     nlohmann::json doc;
 
     if (!file.is_open()) throw FileNotFoundException();
@@ -137,10 +143,9 @@ nlohmann::json ConverterJSON::getJson(const std::string &path) {
 
 // basic checks. Returns json with data if file and path are valid, otherwise returns empty file
 nlohmann::json ConverterJSON::getConfigJson() {
-    std::filesystem::path configPath = getCurrentDirectory();
     nlohmann::json doc;
     try {
-        doc = getJson(configPath.parent_path().parent_path().string().append("\\manage\\config.json"));
+        doc = getJson("../../manage/config.json");
         if (!doc.contains("config")) throw NoConfigFieldException();
         if (doc.find("config").value().empty()) throw ConfigFieldIsEmptyException();
         if (doc.find("config")->find("version").value() != VERSION) throw IncorrectVersionJsonException();
@@ -165,11 +170,9 @@ nlohmann::json ConverterJSON::getConfigJson() {
 
 //returns requests.json if its data is valid
 nlohmann::json ConverterJSON::getRequestsJson() {
-    std::filesystem::path configPath = getCurrentDirectory();
     nlohmann::json doc;
-
     try {
-        doc = getJson(configPath.parent_path().parent_path().string().append("\\manage\\requests.json"));
+        doc = getJson("../../manage/requests.json");
     }
     catch (FileNotFoundException &ex) {
         std::cout << ex.what() << std::endl;
@@ -183,21 +186,11 @@ nlohmann::json ConverterJSON::getRequestsJson() {
     catch (EmptyRequestsFieldException &ex) {
         std::cout << ex.what() << std::endl;
     }
-
     return doc;
 }
 
 void ConverterJSON::testFilesForValid() {
-    std::filesystem::path configPath = getCurrentDirectory();
-    testRequestsJson(configPath.parent_path().parent_path().string().append("\\manage\\requests.json"));
-    testConfigJson(configPath.parent_path().parent_path().string().append("\\manage\\config.json"));
-}
-
-std::string ConverterJSON::getCurrentDirectory() {
-    char buffer[MAX_PATH];
-    GetModuleFileNameA(NULL, buffer, MAX_PATH);
-    std::string::size_type pos = std::string(buffer).find_last_of("\\/");
-
-    return std::string(buffer).substr(0, pos);
+    testRequestsJson("../../manage/requests.json");
+    testConfigJson("../../manage/config.json");
 }
 

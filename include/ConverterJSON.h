@@ -4,8 +4,6 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
-#include "filesystem"
-#include <Windows.h>
 #include "nlohmann/json.hpp"
 #include "InvertredIndex.h"
 #include "SearchServer.h"
@@ -68,5 +66,4 @@ private:
 
     nlohmann::json getRequestsJson();
 
-    std::string getCurrentDirectory();
 };
