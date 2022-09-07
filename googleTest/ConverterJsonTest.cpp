@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
-#include "../include/fs_exception.h"
-#include "../include/ConverterJSON.h"
+#include "fs_exception.h"
+#include "ConverterJSON.h"
 
 bool stringEqual(const std::string& str1, const std::string& str2) {
     if (str1.length() != str2.length()) {

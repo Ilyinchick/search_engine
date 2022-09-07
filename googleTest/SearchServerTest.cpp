@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "../include/SearchServer.h"
+#include "SearchServer.h"
 
 using namespace std;
 

@@ -1,5 +1,5 @@
-#include "../include/fs_exception.h"
-#include "../include/ConverterJSON.h"
+#include "fs_exception.h"
+#include "ConverterJSON.h"
 
 // opens file and returns its data with string
 // throws FileNotFoundException and EmptyFileException if path is invalid or file is empty

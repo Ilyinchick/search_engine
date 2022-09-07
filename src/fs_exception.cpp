@@ -1,4 +1,4 @@
-#include "../include/fs_exception.h"
+#include "fs_exception.h"
 
 const char *fs_exception::what() const noexcept {
     return "File system exception";

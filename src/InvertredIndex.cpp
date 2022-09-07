@@ -1,5 +1,5 @@
-#include "../include/InvertredIndex.h"
-#include "../include/ConverterJSON.h"
+#include "InvertredIndex.h"
+#include "ConverterJSON.h"
 
 std::vector<Entry> InvertedIndex::GetWordCount(const std::string &word) {
     std::vector<Entry> vector;

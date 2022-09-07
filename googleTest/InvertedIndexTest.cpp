@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
-#include "../include/fs_exception.h"
-#include "../include/InvertredIndex.h"
+#include "fs_exception.h"
+#include "InvertredIndex.h"
 
 
 TEST (InverterIndexBlock, updateDocs) {
