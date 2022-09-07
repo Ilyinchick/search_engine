@@ -1,6 +1,6 @@
 #include "SearchServer.h"
 
-std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<std::string> &queries_input) {
+std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<std::string> &queries_input) const {
     std::vector<std::vector<RelativeIndex>> answers;
 
     answers.reserve(queries_input.size());
@@ -10,7 +10,7 @@ std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<s
     return answers;
 }
 
-std::vector<std::string> SearchServer::getWordsFromString(const std::string &str) {
+std::vector<std::string> SearchServer::getWordsFromString(const std::string &str) const {
     std::vector<std::string> words;
 
     std::string word;
@@ -27,7 +27,7 @@ std::vector<std::string> SearchServer::getWordsFromString(const std::string &str
     return words;
 }
 
-std::vector<RelativeIndex> SearchServer::getRelativeVectorForQuery(const std::string &query) {
+std::vector<RelativeIndex> SearchServer::getRelativeVectorForQuery(const std::string &query) const {
     std::vector<RelativeIndex> indexes;
     int absoluteRelevance[_index.getDocs().size()];
     float relevance[_index.getDocs().size()];
@@ -52,7 +52,7 @@ std::vector<RelativeIndex> SearchServer::getRelativeVectorForQuery(const std::st
     return indexes;
 }
 
-void SearchServer::bubbleSortByRelevance(std::vector<RelativeIndex> &vector) {
+void SearchServer::bubbleSortByRelevance(std::vector<RelativeIndex> &vector) const {
     if (vector.size() < 2) return;
     for (int i = 0; i < vector.size() - 1; i++) {
         for (int j = 0; j < vector.size() - 1; j++) {
@@ -70,10 +70,10 @@ void SearchServer::bubbleSortByRelevance(std::vector<RelativeIndex> &vector) {
     }
 }
 
-int SearchServer::countWordsInDoc(const std::string& word, const int &doc_id) {
+int SearchServer::countWordsInDoc(const std::string& word, const int &doc_id) const {
     int count = 0;
 
-    for (auto pair: _index.getDictionary()) {
+    for (const auto& pair: _index.getDictionary()) {
         if (pair.first == word) {
             for (auto data: pair.second) {
                 if (data.doc_id == doc_id) count = data.count;

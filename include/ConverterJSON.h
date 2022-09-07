@@ -14,7 +14,6 @@ const static std::string VERSION = "0.1";
 class ConverterJSON {
 
 public:
-
     ConverterJSON() = default;
 
 /**
@@ -22,48 +21,48 @@ public:
 * @return Возвращает список с содержимым файлов перечисленных
 * в config.json
 */
-    std::vector<std::string> GetTextDocuments();
+    [[nodiscard]] std::vector<std::string> GetTextDocuments() const;
 
 /**
 * Метод считывает поле max_responses для определения предельного
 * количества ответов на один запрос
 * @return
 */
-    int GetResponsesLimit();
+    [[nodiscard]] int GetResponsesLimit() const;
 
 /**
 * Метод получения запросов из файла requests.json
 * @return возвращает список запросов из файла requests.json
 */
-    std::vector<std::string> GetRequests();
+    [[nodiscard]] std::vector<std::string> GetRequests() const;
 
 /**
 * Положить в файл answers.json результаты поисковых запросов
 */
-    void putAnswers(std::vector<std::vector<RelativeIndex>>& answers);
+    void putAnswers(std::vector<std::vector<RelativeIndex>>& answers) const;
 
     //throws Expetion if 'config' or 'request' files are not valid
-    void testFilesForValid();
+    void testFilesForValid() const;
 
 private:
     /*
      * @return std::string as text of document
      * @param path - global path to txt resource file
      */
-    static std::string getDoc(const std::string &path);
+    [[nodiscard]] std::string getDoc(const std::string &path) const;
 
-    static void testConfigJson(const std::string &path);
+    void testConfigJson(const std::string &path) const;
 
-    static void testRequestsJson(const std::string &path);
+    void testRequestsJson(const std::string &path) const;
 
     /*
      * @return json object
      * @param path - global path to json resource file
      */
-    static nlohmann::json getJson(const std::string& path);
+    [[nodiscard]] nlohmann::json getJson(const std::string& path) const;
 
-    nlohmann::json getConfigJson();
+    [[nodiscard]] nlohmann::json getConfigJson() const;
 
-    nlohmann::json getRequestsJson();
+    [[nodiscard]] nlohmann::json getRequestsJson() const;
 
 };

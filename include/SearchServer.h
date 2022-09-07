@@ -29,8 +29,8 @@ requests.json
 * @return возвращает отсортированный список релевантных ответов для
 заданных запросов
 */
-    std::vector<std::vector<RelativeIndex>> search(const
-                                                   std::vector<std::string> &queries_input);
+    [[nodiscard]] std::vector<std::vector<RelativeIndex>> search(const
+                                                   std::vector<std::string> &queries_input) const;
 
 
     void setResponseLimit(const int& limit);
@@ -40,12 +40,12 @@ private:
     int responseLimit;
 
     // sorting
-    void bubbleSortByRelevance(std::vector<RelativeIndex> &vector);
+    void bubbleSortByRelevance(std::vector<RelativeIndex> &vector) const;
 
-    std::vector<std::string> getWordsFromString(const std::string &str);
+    std::vector<std::string> getWordsFromString(const std::string &str) const;
 
-    int countWordsInDoc(const std::string& word, const int &doc_id);
+    int countWordsInDoc(const std::string& word, const int &doc_id) const;
 
-    std::vector<RelativeIndex> getRelativeVectorForQuery(const std::string &query);
+    std::vector<RelativeIndex> getRelativeVectorForQuery(const std::string &query) const;
 
 };

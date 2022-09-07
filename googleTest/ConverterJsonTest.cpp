@@ -14,7 +14,7 @@ bool stringEqual(const std::string& str1, const std::string& str2) {
 
 TEST(converterJSON, GetTextDocuments) {
     auto converter = new ConverterJSON();
-    const std::string test = "C++\nwas\ntest1";
+    const std::string test = "c++\nwas\ntest1";
     auto list = converter->GetTextDocuments();
     EXPECT_GT(list.size(), 0);
     EXPECT_TRUE(stringEqual(list[2], test));

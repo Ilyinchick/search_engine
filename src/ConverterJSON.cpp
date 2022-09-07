@@ -3,26 +3,24 @@
 
 // opens file and returns its data with string
 // throws FileNotFoundException and EmptyFileException if path is invalid or file is empty
-std::string ConverterJSON::getDoc(const std::string &path) {
-    std::ifstream file;
+std::string ConverterJSON::getDoc(const std::string &path) const {
+    std::ifstream file(path, std::ios::in);
     std::string answer, buff;
 
-    file.open(path);
     if (!file.is_open()) throw FileNotFoundException();
-
-    while (file) {
+        while (file) {
         std::getline(file, buff);
         answer.append(buff);
         if (!file.eof()) answer.append("\n");
         buff.clear();
     }
-
     if (answer.length() <= 1) throw EmptyFileException();
+    for (auto& c: answer) c = (char)tolower(c);
 
     return answer;
 }
 
-void ConverterJSON::testConfigJson(const std::string &path) {
+void ConverterJSON::testConfigJson(const std::string &path) const {
     nlohmann::json dict;
     try {
         dict = getJson(path);
@@ -45,7 +43,7 @@ void ConverterJSON::testConfigJson(const std::string &path) {
     }
 }
 
-void ConverterJSON::testRequestsJson(const std::string &path) {
+void ConverterJSON::testRequestsJson(const std::string &path) const {
     nlohmann::json dict;
     try {
         dict = getJson(path);
@@ -63,7 +61,7 @@ void ConverterJSON::testRequestsJson(const std::string &path) {
 
 
 // Returns vector with data in files which specified in config.json in field "files"
-std::vector<std::string> ConverterJSON::GetTextDocuments() {
+std::vector<std::string> ConverterJSON::GetTextDocuments() const {
     std::vector<std::string> list;
     nlohmann::json doc = getConfigJson();
     for (std::string s: doc.find("files").value()) {
@@ -81,12 +79,12 @@ std::vector<std::string> ConverterJSON::GetTextDocuments() {
 }
 
 //returns int value of "max_responses" field in config.json
-int ConverterJSON::GetResponsesLimit() {
+int ConverterJSON::GetResponsesLimit() const {
     return getConfigJson().find("config")->find("max_responses").value();
 }
 
 //returns list of requests in requests.json
-std::vector<std::string> ConverterJSON::GetRequests() {
+std::vector<std::string> ConverterJSON::GetRequests() const {
     std::vector<std::string> requests;
     nlohmann::json doc = getRequestsJson();
     for (std::string s: doc.find("requests").value()) {
@@ -96,7 +94,7 @@ std::vector<std::string> ConverterJSON::GetRequests() {
     return requests;
 }
 
-void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>> &answers) {
+void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>> &answers) const {
     std::ofstream file("../../manage/answers.json", std::ios::out | std::ios::trunc);
     nlohmann::json doc;
 
@@ -130,7 +128,7 @@ void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>> &answers)
 }
 
 // throws FileNotFoundException and EmptyFileException if path or dile is invalid, otherwise return json
-nlohmann::json ConverterJSON::getJson(const std::string &path) {
+nlohmann::json ConverterJSON::getJson(const std::string &path) const {
     std::ifstream file(path, std::ios::in);
     nlohmann::json doc;
 
@@ -142,7 +140,7 @@ nlohmann::json ConverterJSON::getJson(const std::string &path) {
 }
 
 // basic checks. Returns json with data if file and path are valid, otherwise returns empty file
-nlohmann::json ConverterJSON::getConfigJson() {
+nlohmann::json ConverterJSON::getConfigJson() const {
     nlohmann::json doc;
     try {
         doc = getJson("../../manage/config.json");
@@ -169,7 +167,7 @@ nlohmann::json ConverterJSON::getConfigJson() {
 }
 
 //returns requests.json if its data is valid
-nlohmann::json ConverterJSON::getRequestsJson() {
+nlohmann::json ConverterJSON::getRequestsJson() const {
     nlohmann::json doc;
     try {
         doc = getJson("../../manage/requests.json");
@@ -189,7 +187,7 @@ nlohmann::json ConverterJSON::getRequestsJson() {
     return doc;
 }
 
-void ConverterJSON::testFilesForValid() {
+void ConverterJSON::testFilesForValid() const {
     testRequestsJson("../../manage/requests.json");
     testConfigJson("../../manage/config.json");
 }

@@ -32,24 +32,23 @@ public:
     */
     void UpdateDocumentBase(std::vector<std::string> docs);
 
-
     /*
      * Метод определяет количество вхождений слова word в загруженной базе документов
     * @param word слово, частоту вхождений которого необходимо определить
     * @return возвращает подготовленный список с частотой слов
      */
-    std::vector<Entry> GetWordCount(const std::string &word);
+    [[nodiscard]] std::vector<Entry> GetWordCount(const std::string &word) const;
 
     /*
      * simple getter
      * @return private 'freq_dictionary' field
      */
-    std::map<std::string, std::vector<Entry>> getDictionary();
+    [[nodiscard]] std::map<std::string, std::vector<Entry>> getDictionary() const;
     /*
      * simple getter
      * @returns private 'docs' field
      */
-    std::vector<std::string> getDocs();
+    [[nodiscard]] std::vector<std::string> getDocs() const;
 
 
     /*
@@ -93,7 +92,7 @@ public:
 
 private:
 
-    int countWordsInStr(const std::string& word, const std::string& str);
+    [[nodiscard]] int countWordsInStr(const std::string& word, const std::string& str) const;
 
     std::map<std::string, std::vector<Entry>> freq_dictionary; // частотный словарь
     std::vector<std::string> docs;
