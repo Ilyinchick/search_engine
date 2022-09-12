@@ -5,33 +5,33 @@
 
 
 TEST(jsonFiles, configExist) {
-    std::ifstream file("../../manage/config.json");
+    std::ifstream file("../src/manage/config.json", std::ios::in);
     EXPECT_TRUE(file.is_open());
 }
 
 TEST (jsonFiles, configNotEmpty) {
-    std::ifstream file("../../manage/config.json");
+    std::ifstream file("../src/manage/config.json");
     nlohmann::json jfile;
     file >> jfile;
     EXPECT_FALSE(jfile.empty());
 }
 
 TEST (jsonFiles, configField) {
-    std::ifstream file("../../manage/config.json");
+    std::ifstream file("../src/manage/config.json");
     nlohmann::json jfile;
     file >> jfile;
     EXPECT_TRUE(jfile.contains("config"));
 }
 
 TEST (jsonFiles, configFieldIsNotEmpty) {
-    std::ifstream file("../../manage/config.json");
+    std::ifstream file("../src/manage/config.json");
     nlohmann::json jfile;
     file >> jfile;
     EXPECT_FALSE(jfile.find("config")->empty());
 }
 
 TEST (jsonFiles, configFieldContaisAllFields) {
-    std::ifstream file("../../manage/config.json");
+    std::ifstream file("../src/manage/config.json");
     nlohmann::json jfile;
     file >> jfile;
     EXPECT_TRUE(jfile.find("config")->contains("name"));
@@ -41,26 +41,26 @@ TEST (jsonFiles, configFieldContaisAllFields) {
 }
 
 TEST (jsonFiles, versionCheck) {
-    std::ifstream file("../../manage/config.json");
+    std::ifstream file("../src/manage/config.json");
     nlohmann::json jfile;
     file >> jfile;
     EXPECT_EQ(jfile.find("config")->find("version").value(), VERSION);
 }
 
 TEST (jsonFiles, requestsFileExist) {
-    std::ifstream file("../../manage/requests.json");
+    std::ifstream file("../src/manage/requests.json");
     EXPECT_TRUE(file.is_open());
 }
 
 TEST (jsonFiles, requestFileIsNotEmpty) {
-    std::ifstream file("../../manage/requests.json");
+    std::ifstream file("../src/manage/requests.json");
     nlohmann::json jfile;
     file >> jfile;
     EXPECT_FALSE(jfile.empty());
 }
 
 TEST (jsonFiles, requestsFileContainsRequestsField) {
-    std::ifstream file("../../manage/requests.json");
+    std::ifstream file("../src/manage/requests.json");
     nlohmann::json jfile;
     file >> jfile;
     EXPECT_TRUE(jfile.contains("requests"));
