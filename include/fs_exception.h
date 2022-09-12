@@ -41,3 +41,8 @@ class EmptyRequestsFieldException: public fs_exception {
 public:
     const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
 };
+
+class ConfigFilesException: public fs_exception {
+public:
+    const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
+};

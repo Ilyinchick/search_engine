@@ -31,3 +31,7 @@ const char *NoRequestsFieldException::what() const noexcept {
 const char *EmptyRequestsFieldException::what() const noexcept {
     return "\"requests\" field is emtpy";
 }
+
+const char *ConfigFilesException::what() const noexcept {
+    return "Config files are not valid";
+}
