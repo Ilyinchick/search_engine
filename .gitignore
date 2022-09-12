@@ -1,3 +1,4 @@
 .idea/
 .git/
 build_cmake_dir/
+executable/search_engine_build.exe

@@ -1,1 +1,0 @@
-{"answers":{"request0":{"relevance":{"docid: 0":"rank: 1.000000","docid: 1":"rank: 0.500000"},"result":"true"},"request1":{"docid: 1":"rank: 1.000000","result":"true"},"request2":{"docid: 2":"rank: 1.000000","result":"true"},"request3":{"result":"false"},"request4":{"relevance":{"docid: 0":"rank: 1.000000","docid: 1":"rank: 0.250000"},"result":"true"}}}
