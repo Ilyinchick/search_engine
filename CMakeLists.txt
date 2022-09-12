@@ -8,6 +8,6 @@ set(JSON_BuildTests OFF CACHE INTERNAL "")
 add_subdirectory(json-develop)
 add_subdirectory(src)
 
-target_link_libraries(search_engine PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(search_engine_build PRIVATE nlohmann_json::nlohmann_json)
 
 add_subdirectory(googleTest)
