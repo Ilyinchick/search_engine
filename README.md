@@ -24,8 +24,8 @@ I used nlohmann::json library</li>
 <ul>
 <li>Download and extract this project. </li>
 <li>If you want to add some txt files to search, you need to write paths to those files in file 
-<a href="manage/config.json">config.json</a> ("manage" folder) </li>
-<li>In file <a href="manage/requests.json">requests.json</a> ("manage" folder) you can add more requests
+<a href="build_cmake_dir/src/manage/config.json">config.json</a> ("manage" folder) </li>
+<li>In file <a href="build_cmake_dir/src/manage/requests.json">requests.json</a> ("manage" folder) you can add more requests
 to search and adjust they to your needs. </li>
 </ul>
 
