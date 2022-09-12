@@ -95,7 +95,7 @@ std::vector<std::string> ConverterJSON::GetRequests() const {
 }
 
 void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>> &answers) const {
-    std::ofstream file("../../manage/answers.json", std::ios::out | std::ios::trunc);
+    std::ofstream file("./manage/answers.json", std::ios::out | std::ios::trunc);
     nlohmann::json doc;
 
     doc["answers"];
@@ -130,11 +130,18 @@ void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>> &answers)
 // throws FileNotFoundException and EmptyFileException if path or dile is invalid, otherwise return json
 nlohmann::json ConverterJSON::getJson(const std::string &path) const {
     std::ifstream file(path, std::ios::in);
+    std::string example;
     nlohmann::json doc;
-
-    if (!file.is_open()) throw FileNotFoundException();
-    file >> doc;
-    if (doc.empty()) throw EmptyFileException();
+    try {
+        if (!file.is_open()) throw FileNotFoundException();
+        file >> doc;
+        if (doc.empty()) throw EmptyFileException();
+    } catch (FileNotFoundException &ex) {
+        std::cout << ex.what() << std::endl << "Cannot find file with path: \"" << path << "\"" << std::endl;
+    } catch (EmptyFileException &ex) {
+        std::cout << ex.what() << "File with path \"" << path << "\" exists, but it's empty." << std::endl;
+    }
+    file.close();
 
     return doc;
 }
@@ -143,13 +150,13 @@ nlohmann::json ConverterJSON::getJson(const std::string &path) const {
 nlohmann::json ConverterJSON::getConfigJson() const {
     nlohmann::json doc;
     try {
-        doc = getJson("../../manage/config.json");
+        doc = getJson("./manage/config.json");
         if (!doc.contains("config")) throw NoConfigFieldException();
         if (doc.find("config").value().empty()) throw ConfigFieldIsEmptyException();
         if (doc.find("config")->find("version").value() != VERSION) throw IncorrectVersionJsonException();
     }
     catch (FileNotFoundException &ex) {
-        std::cout << ex.what();
+        std::cout << ex.what() << std::endl;
     }
     catch (EmptyFileException &ex) {
         std::cout << ex.what() << std::endl;
@@ -170,7 +177,7 @@ nlohmann::json ConverterJSON::getConfigJson() const {
 nlohmann::json ConverterJSON::getRequestsJson() const {
     nlohmann::json doc;
     try {
-        doc = getJson("../../manage/requests.json");
+        doc = getJson("./manage/requests.json");
     }
     catch (FileNotFoundException &ex) {
         std::cout << ex.what() << std::endl;
@@ -188,7 +195,7 @@ nlohmann::json ConverterJSON::getRequestsJson() const {
 }
 
 void ConverterJSON::testFilesForValid() const {
-    testRequestsJson("../../manage/requests.json");
-    testConfigJson("../../manage/config.json");
+    testRequestsJson("./manage/requests.json");
+    testConfigJson("./manage/config.json");
 }
 
