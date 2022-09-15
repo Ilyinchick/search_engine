@@ -147,6 +147,9 @@ nlohmann::json ConverterJSON::getJson(const std::string &path) const {
         std::cout << ex.what() << std::endl << "Cannot find file with path: \"" << path << "\"" << std::endl;
     } catch (EmptyFileException &ex) {
         std::cout << ex.what() << "File with path \"" << path << "\" exists, but it's empty." << std::endl;
+    } catch (nlohmann::json::exception &ex) {
+        std::cout << "Exception while reading json:\n" <<  ex.what() << "\nCheck the json file in \'" << path << "\'"  << std::endl;
+        doc.clear();
     }
     file.close();
 

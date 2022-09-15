@@ -2,3 +2,4 @@
 .git/
 build_cmake_dir/
 executable/search_engine_build.exe
+executable/Google_Tests_run.exe

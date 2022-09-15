@@ -13,6 +13,7 @@ int main() {
         server.setResponseLimit(converter.GetResponsesLimit());
         auto answers = server.search(converter.GetRequests());
         converter.putAnswers(answers);
+        std::cout << "Execution is complete!" << std::endl;
     } catch (ConfigFilesException &ex) {
         std::cout << ex.what() << std::endl;
     }
