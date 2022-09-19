@@ -2,47 +2,52 @@
 
 #include <exception>
 
-class fs_exception: public std::exception {
+class fs_exception : public std::exception {
 public:
     const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
 };
 
-class FileNotFoundException: public fs_exception {
+class FileNotFoundException : public fs_exception {
 public:
     const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
 };
 
-class EmptyFileException: public fs_exception {
+class EmptyFileException : public fs_exception {
 public:
     const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
 };
 
-class NoConfigFieldException: public fs_exception {
+class NoConfigFieldException : public fs_exception {
 public:
     const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
 };
 
-class ConfigFieldIsEmptyException: public fs_exception {
+class ConfigFieldIsEmptyException : public fs_exception {
 public:
     const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
 };
 
-class IncorrectVersionJsonException: public fs_exception {
+class IncorrectVersionJsonException : public fs_exception {
 public:
     const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
 };
 
-class NoRequestsFieldException: public fs_exception {
+class NoRequestsFieldException : public fs_exception {
 public:
     const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
 };
 
-class EmptyRequestsFieldException: public fs_exception {
+class EmptyRequestsFieldException : public fs_exception {
 public:
     const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
 };
 
-class ConfigFilesException: public fs_exception {
+class ConfigFilesException : public fs_exception {
+public:
+    const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
+};
+
+class WriteToFileException : public fs_exception {
 public:
     const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
 };

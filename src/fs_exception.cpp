@@ -35,3 +35,7 @@ const char *EmptyRequestsFieldException::what() const noexcept {
 const char *ConfigFilesException::what() const noexcept {
     return "Config files are not valid";
 }
+
+const char *WriteToFileException::what() const noexcept {
+    return "Cannot write data to file";
+}

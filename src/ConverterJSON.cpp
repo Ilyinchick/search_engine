@@ -1,5 +1,11 @@
 #include "ConverterJSON.h"
 
+const std::string ConverterJSON::configPath = "./manage/config.json";
+
+const std::string ConverterJSON::requestsPath = "./manage/requests.json";
+
+const std::string ConverterJSON::answersPath = "./manage/answers.json";
+
 // opens file and returns its data with string
 // throws FileNotFoundException and EmptyFileException if path is invalid or file is empty
 std::string ConverterJSON::getDoc(const std::string &path) const {
@@ -70,9 +76,9 @@ bool ConverterJSON::testRequestsJson(const std::string &path) const {
 std::vector<std::string> ConverterJSON::GetTextDocuments() const {
     std::vector<std::string> list;
     nlohmann::json doc = getConfigJson();
-    for (std::string s: doc.find("files").value()) {
+    for (const auto &s: doc.find("files").value()) {
         try {
-            list.push_back(getDoc(s));
+            list.push_back(getDoc((std::string) s));
         }
         catch (FileNotFoundException &ex) {
             std::cout << ex.what() << " in ConverterJSON.cpp 62" << std::endl;
@@ -93,7 +99,8 @@ int ConverterJSON::GetResponsesLimit() const {
 std::vector<std::string> ConverterJSON::GetRequests() const {
     std::vector<std::string> requests;
     nlohmann::json doc = getRequestsJson();
-    for (std::string s: doc.find("requests").value()) {
+    for (const auto &val: doc.find("requests").value()) {
+        std::string s = val;
         for (auto &c: s) c = (char) tolower(c);
         requests.push_back(s);
     }
@@ -101,7 +108,7 @@ std::vector<std::string> ConverterJSON::GetRequests() const {
 }
 
 void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>> &answers) const {
-    std::ofstream file("./manage/answers.json", std::ios::out | std::ios::trunc);
+    std::ofstream file(answersPath, std::ios::out | std::ios::trunc);
     nlohmann::json doc;
 
     doc["answers"];
@@ -148,7 +155,8 @@ nlohmann::json ConverterJSON::getJson(const std::string &path) const {
     } catch (EmptyFileException &ex) {
         std::cout << ex.what() << "File with path \"" << path << "\" exists, but it's empty." << std::endl;
     } catch (nlohmann::json::exception &ex) {
-        std::cout << "Exception while reading json:\n" <<  ex.what() << "\nCheck the json file in \'" << path << "\'"  << std::endl;
+        std::cout << "Exception while reading json:\n" << ex.what() << "\nCheck the json file in \'" << path << "\'"
+                  << std::endl;
         doc.clear();
     }
     file.close();
@@ -160,7 +168,7 @@ nlohmann::json ConverterJSON::getJson(const std::string &path) const {
 nlohmann::json ConverterJSON::getConfigJson() const {
     nlohmann::json doc;
     try {
-        doc = getJson("./manage/config.json");
+        doc = getJson(configPath);
         if (!doc.contains("config")) throw NoConfigFieldException();
         if (doc.find("config").value().empty()) throw ConfigFieldIsEmptyException();
         if (doc.find("config")->find("version").value() != VERSION) throw IncorrectVersionJsonException();
@@ -187,7 +195,7 @@ nlohmann::json ConverterJSON::getConfigJson() const {
 nlohmann::json ConverterJSON::getRequestsJson() const {
     nlohmann::json doc;
     try {
-        doc = getJson("./manage/requests.json");
+        doc = getJson(requestsPath);
     }
     catch (FileNotFoundException &ex) {
         std::cout << ex.what() << std::endl;
@@ -205,7 +213,27 @@ nlohmann::json ConverterJSON::getRequestsJson() const {
 }
 
 void ConverterJSON::testFilesForValid() const {
-    if (!(testRequestsJson("./manage/requests.json") && testConfigJson("./manage/config.json")))
+    if (!(testRequestsJson(requestsPath) && testConfigJson(configPath)))
         throw ConfigFilesException();
+    if (!isFileIsWritable(answersPath)) throw WriteToFileException();
+}
+
+bool ConverterJSON::isFileIsWritable(const std::string &path) const {
+    char c;
+    int i = 0;
+
+    std::ifstream firstRead(path, std::ios::in);
+    while (firstRead.get(c)) i++;
+    firstRead.close();
+
+    std::ofstream write(path, std::ios::app | std::ios::out);
+    write << "Test";
+    write.close();
+
+    std::ifstream secondRead(path, std::ios::in);
+    while (secondRead.get(c)) i--;
+    secondRead.close();
+
+    return i != 0;
 }
 

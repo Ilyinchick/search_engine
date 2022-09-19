@@ -40,7 +40,7 @@ public:
 /**
 * Положить в файл answers.json результаты поисковых запросов
 */
-    void putAnswers(std::vector<std::vector<RelativeIndex>>& answers) const;
+    void putAnswers(std::vector<std::vector<RelativeIndex>> &answers) const;
 
     //throws Expetion if 'config' or 'request' files are not valid
     void testFilesForValid() const;
@@ -60,10 +60,21 @@ private:
      * @return json object
      * @param path - global path to json resource file
      */
-    nlohmann::json getJson(const std::string& path) const;
+    nlohmann::json getJson(const std::string &path) const;
 
     nlohmann::json getConfigJson() const;
 
     nlohmann::json getRequestsJson() const;
 
+    /*
+     * check is file is can be written
+     * @returns true if it can, otherwise returns false
+     */
+    bool isFileIsWritable(const std::string &path) const;
+
+    const static std::string configPath;
+
+    const static std::string requestsPath;
+
+    const static std::string answersPath;
 };
