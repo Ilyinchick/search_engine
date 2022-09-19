@@ -34,7 +34,7 @@ requests.json
                                                    std::vector<std::string> &queries_input) const;
 
 
-    void setResponseLimit(int &limit);
+    void setResponseLimit(int limit);
 
 private:
     InvertedIndex _index;
