@@ -16,6 +16,8 @@ int main() {
         std::cout << "Execution is complete!" << std::endl;
     } catch (ConfigFilesException &ex) {
         std::cout << ex.what() << std::endl;
+    } catch (WriteToFileException &ex) {
+        std::cout << ex.what() << std::endl;
     }
 
     return 0;
