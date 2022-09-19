@@ -13,7 +13,8 @@ std::vector<Entry> InvertedIndex::GetWordCount(const std::string &word) const {
 }
 
 int InvertedIndex::countWordsInStr(const std::string &word, const std::string &str) const {
-    if (str.find(word) != std::string::npos && ( str.find(word) == 0) || str[(str.find(word) - 1)] == ' ' || str[(str.find(word) - 1)] == '\n') {
+    if (str.find(word) != std::string::npos && (str.find(word) == 0) || str[(str.find(word) - 1)] == ' ' ||
+        str[(str.find(word) - 1)] == '\n') {
         return 1 + countWordsInStr(word, str.substr(str.find(word) + word.length(), str.length()));
     } else return 0;
 }
@@ -22,7 +23,7 @@ void InvertedIndex::UpdateDocumentBase(std::vector<std::string> _docs) {
     docs = std::move(_docs);
     freq_dictionary.clear();
 
-    for (auto& word: getWordsBaseFromDoc(docs)) {
+    for (auto &word: getWordsBaseFromDoc(docs)) {
         auto entryVectors = GetWordCount(word);
         auto pair = std::make_pair(word, entryVectors);
         freq_dictionary.insert(pair);
@@ -30,7 +31,7 @@ void InvertedIndex::UpdateDocumentBase(std::vector<std::string> _docs) {
 
 }
 
-std::map<std::string, std::vector<Entry>> InvertedIndex::getDictionary() const {
+const std::map<std::string, std::vector<Entry>> &InvertedIndex::getDictionary() const {
     return freq_dictionary;
 }
 

@@ -37,25 +37,26 @@ public:
     * @param word слово, частоту вхождений которого необходимо определить
     * @return возвращает подготовленный список с частотой слов
      */
-    [[nodiscard]] std::vector<Entry> GetWordCount(const std::string &word) const;
+    std::vector<Entry> GetWordCount(const std::string &word) const;
 
     /*
      * simple getter
      * @return private 'freq_dictionary' field
      */
-    [[nodiscard]] std::map<std::string, std::vector<Entry>> getDictionary() const;
+    const std::map<std::string, std::vector<Entry>> &getDictionary() const;
+
     /*
      * simple getter
      * @returns private 'docs' field
      */
-    [[nodiscard]] std::vector<std::string> getDocs() const;
+    std::vector<std::string> getDocs() const;
 
 
     /*
      * @param str - text of document
      * split words from file and insert them into std::set wordBase to eliminate duplicates
      */
-    static void getWordsFromFile(const std::string& str) {
+    static void getWordsFromFile(const std::string &str) {
         std::string word;
         for (auto &c: str) {
             if (c == ' ' || c == '\n') {
@@ -65,7 +66,8 @@ public:
                 word.clear();
                 continue;
             }
-            if ((c >= 48 && c <= 57) || (c >= 65 && c <= 90) || (c >= 97 && c <= 122) || c == '-' || c == '+') word += (char)tolower(c);
+            if ((c >= 48 && c <= 57) || (c >= 65 && c <= 90) || (c >= 97 && c <= 122) || c == '-' || c == '+')
+                word += (char) tolower(c);
         }
         if (word.length() != 0) {
             locker.lock();
@@ -78,12 +80,12 @@ public:
      * @param data - vector of std::string that contains data from all documents
      * calls getWordsFromFile() in separate threads for each document in vector
      */
-    static std::set<std::string> getWordsBaseFromDoc(const std::vector<std::string>& data) {
+    static std::set<std::string> getWordsBaseFromDoc(const std::vector<std::string> &data) {
         std::vector<std::thread> threads;
-        for (auto& str: data) {
+        for (auto &str: data) {
             threads.push_back(std::thread(getWordsFromFile, std::ref(str)));
         }
-        for (auto& thr: threads) {
+        for (auto &thr: threads) {
             thr.join();
         }
         return wordsBase;
@@ -92,7 +94,7 @@ public:
 
 private:
 
-    [[nodiscard]] int countWordsInStr(const std::string& word, const std::string& str) const;
+    int countWordsInStr(const std::string &word, const std::string &str) const;
 
     std::map<std::string, std::vector<Entry>> freq_dictionary; // частотный словарь
     std::vector<std::string> docs;
