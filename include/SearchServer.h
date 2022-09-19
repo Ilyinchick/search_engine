@@ -1,6 +1,7 @@
 #pragma once
 
 #include "InvertredIndex.h"
+#include "algorithm"
 
 struct RelativeIndex {
     int doc_id;
@@ -29,22 +30,20 @@ requests.json
 * @return возвращает отсортированный список релевантных ответов для
 заданных запросов
 */
-    [[nodiscard]] std::vector<std::vector<RelativeIndex>> search(const
+    std::vector<std::vector<RelativeIndex>> search(const
                                                    std::vector<std::string> &queries_input) const;
 
 
-    void setResponseLimit(const int& limit);
+    void setResponseLimit(int &limit);
 
 private:
     InvertedIndex _index;
-    int responseLimit;
 
-    // sorting
-    void bubbleSortByRelevance(std::vector<RelativeIndex> &vector) const;
+    int responseLimit;
 
     std::vector<std::string> getWordsFromString(const std::string &str) const;
 
-    int countWordsInDoc(const std::string& word, const int &doc_id) const;
+    int countWordsInDoc(const std::string &word, int &doc_id) const;
 
     std::vector<RelativeIndex> getRelativeVectorForQuery(const std::string &query) const;
 
